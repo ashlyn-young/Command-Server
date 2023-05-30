@@ -39,8 +39,7 @@ const server = net.createServer((client) => {
     process.stdout.write(`${client.id} has joined the chat room.\n`)
     
     // client.destroy with kicking
-// plural sight with node and express tutorial
-// mern stack tutorial
+
     client.on('data', (data) => {
         // console.log(data)
 
