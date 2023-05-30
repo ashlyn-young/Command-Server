@@ -11,8 +11,7 @@ If there is no error then a message should be broadcast to all users informing t
 /kick - Kicks another connected client, as long as the supplied admin password is correct. (You can just store an adminPassword variable in memory on your server for now.) For example ‘/kick Guest3 supersecretpw’ should kick Guest3 from the chat
 Your server should send an informative error message if the command fails for any reason (incorrect number of inputs, incorrect admin password, trying to kick themselves, invalid username to kick, etc)
 If there is no error then a private message should be sent to the kicked user informing them that they have been kicked from the chat. They should then be removed from the server. A message should be broadcast to all other users informing them that the kicked user left the chat.
-
-/clientlist - sends a list of all connected client names.*/
+*/
 
 
 const net = require('net');
@@ -24,6 +23,7 @@ let guest = 1;
 
 
 const server = net.createServer((client) => {
+    client.setEncoding('utf-8')
     // file.write('This is the beginning of a new chat session\n')
     client.id = "Guest" + guest++;
     clientArr.push(client)
@@ -38,29 +38,36 @@ const server = net.createServer((client) => {
     })
     process.stdout.write(`${client.id} has joined the chat room.\n`)
     
-    
-
+    // client.destroy with kicking
+// plural sight with node and express tutorial
+// mern stack tutorial
     client.on('data', (data) => {
-        // if(quit === data) {
-        //     client.write(`Thank you for joining us, ${client.id}. We look forward to you joining us again!`)
-        //     if(client !== client) {
-        //         client.write(`${client.id} has left the chat.`)
-        //         clientArr.indexOf(client.id)
-        //     }
-        // }
-        // if('/clientlist' === data) {
-        //     console.log(clientArr)
-        // }
-        // if(`/w ${user.id}` === data) {
-        //     guest.write(`From ${client.id} to you : ${data}`)
-        // }
-        console.log(`${client.id} said: ${data.toString()}`);
+        // console.log(data)
+
+        if(data.trim() === '/clientlist') {
+            // console.log(clientArr)
+            const clientList = clientArr.map(client => client.id).join(', ');
+            client.write(clientList)
+            console.log('A user has requested the client list')
+        } else if(data.startsWith('/username')){
+            oldUser = client.id;
+            newUser = data.split(' ')[1].trim();
+            client.id = newUser;
+            clientArr.forEach(guest => {
+                if(guest !== client) {
+                    guest.write(`${oldUser} has changed their name to ${newUser}`)
+                }
+            })
+            file.write(`${oldUser} has changed their name to ${newUser}.\n`)
+        } else {
         clientArr.forEach(guest => {
             if(guest !== client) {
                 guest.write(`${client.id}: ${data}`)
             }
         })
         file.write(`${client.id} said : ${data}\n`)
+        console.log(`${client.id} said: ${data.toString()}`);
+    }
         
     });
     
