@@ -58,6 +58,12 @@ const server = net.createServer((client) => {
                 }
             })
             file.write(`${oldUser} has changed their name to ${newUser}.\n`)
+        // } else if(data.trim() === '/w'){
+        //     sender = client.id
+        //     receiver = data.split(' ')[1].trim()
+        //     receiver.write(`${sender} whispers to you: ${data}`)
+
+        // Trying to adjust so that it only whispers to the determined user
         } else {
         clientArr.forEach(guest => {
             if(guest !== client) {
