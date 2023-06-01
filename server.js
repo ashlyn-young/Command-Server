@@ -56,11 +56,9 @@ const server = net.createServer((client) => {
             })
             file.write(`${oldUser} has changed their name to ${newUser}.\n`)
         } else if(data.startsWith('/w')){
-            // Almost have whisper working. It's placing commas between each word of the message.
             sender = client.id;
             receiver = data.split(' ')[1];
-            message = data.split(' ').slice(2).toString().replaceAll(',', ' ');
-            console.log(message)           
+            message = data.split(' ').slice(2).toString().replaceAll(',', ' ');      
             clientArr.forEach(guest => {
                 if(guest.id !== sender) {
                     if(guest.id === receiver) {
@@ -70,7 +68,24 @@ const server = net.createServer((client) => {
                     
                 }
             })
-            
+        } else if(data.startsWith('/kick')){
+            sender = client.id;
+            booted = data.split(' ')[1];
+            requiredPassword = 'secret';
+            passWord = data.split(' ')[2].trim();
+            if(sender != booted){
+               if(requiredPassword === passWord){
+                   clientArr.forEach(guest => {
+                       if(guest.id === booted){
+                            console.log(booted)
+                            guest.write(`${booted} has left the chat.`)
+                            guest.end();
+                       }
+                       
+               
+                   })  
+                }
+            }   
             
         } else {
         clientArr.forEach(guest => {
