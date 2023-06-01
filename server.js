@@ -59,7 +59,8 @@ const server = net.createServer((client) => {
             // Almost have whisper working. It's placing commas between each word of the message.
             sender = client.id;
             receiver = data.split(' ')[1];
-            message = data.split(' ').slice(2);            
+            message = data.split(' ').slice(2).toString().replaceAll(',', ' ');
+            console.log(message)           
             clientArr.forEach(guest => {
                 if(guest.id !== sender) {
                     if(guest.id === receiver) {
