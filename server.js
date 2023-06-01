@@ -34,14 +34,9 @@ const server = net.createServer((client) => {
         }
     })
     process.stdout.write(`${client.id} has joined the chat room.\n`)
-    
-    // client.destroy with kicking
 
     client.on('data', (data) => {
-        // console.log(data)
-
         if(data.trim() === '/clientlist') {
-            // console.log(clientArr)
             const clientList = clientArr.map(client => client.id).join(', ');
             client.write(clientList)
             console.log('A user has requested the client list')
