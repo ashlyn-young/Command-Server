@@ -60,7 +60,7 @@ const server = net.createServer((client) => {
                    clientArr.forEach(guest => {
                        if(guest.id === booted){
                             // console.log(booted)
-                            guest.write(`You have been booted from the chat, any further messages you type will not be sent or logged.`)
+                            guest.write(`\nYou have been booted from the chat, any further messages you type will not be sent or logged.`)
                             guest.end();
                        }
                     })
